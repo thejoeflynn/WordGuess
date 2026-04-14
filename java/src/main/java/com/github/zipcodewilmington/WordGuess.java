@@ -9,11 +9,10 @@ import java.util.Scanner;
  */
 public class WordGuess {
     public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-
         System.out.println("Welcome to Word Guess!");
         System.out.println("Go ahead and guess a letter. Or type 'Quit' to quit the game.");
 
+    try (Scanner scanner = new Scanner(System.in)) {
         String input = "";
 
     while (!input.equalsIgnoreCase("Quit")) {
@@ -22,8 +21,8 @@ public class WordGuess {
             System.out.println("Thanks for playing!");
             break;
         } else {
-            System.out.println(input);
         }
     } 
     }
+}
 }
