@@ -1,28 +1,83 @@
 package com.github.zipcodewilmington;
 
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 
-/**
- * @author xt0fer
- * @version 1.0.0
- * @date 5/27/21 11:02 AM
- */
 public class WordGuess {
-    public static void main(String[] args) {
-        System.out.println("Welcome to Word Guess!");
-        System.out.println("Go ahead and guess a letter. Or type 'Quit' to quit the game.");
 
-    try (Scanner scanner = new Scanner(System.in)) {
-        String input = "";
+    private String word;
+    private Set<Character> guessedLetters;
+    private int maxAttempts;
+    private int wrongGuesses;
+    static Scanner scanner = new Scanner(System.in);
 
-    while (!input.equalsIgnoreCase("Quit")) {
-        input = scanner.nextLine();
-        if (input.equalsIgnoreCase("Quit")) {
-            System.out.println("Thanks for playing!");
-            break;
-        } else {
-        }
-    } 
+    public WordGuess(String word) {
+        this.word = word.toUpperCase();
+       resetGame();
     }
-}
+
+    public void resetGame() {
+        this.guessedLetters = new HashSet<>();
+        this.maxAttempts = 6;
+        this.wrongGuesses = 0;
+    }
+
+    public String displayWord() {
+
+        // Show the word with blanks for unguessed letters
+        StringBuilder display = new StringBuilder();
+        for (char letter : word.toCharArray()) {
+            if (guessedLetters.contains(letter)) {
+                display.append(letter).append(" ");
+            } else {
+                display.append("_ ");
+            }
+        }
+        return display.toString().trim();
+    }
+
+    public boolean hasUnderscores(String wordToTest) {
+       if (wordToTest.indexOf('_') == -1) {
+              return false;
+       }
+       return true;
+    }
+
+    public void play() {
+        
+        while (true) {
+            String currentWord = this.displayWord();
+            System.out.println(currentWord);
+            if (this.hasUnderscores(currentWord) == false) {
+              System.out.println("You Won!");
+              break;
+            }
+            System.out.print("Guess a letter: ");
+
+            String guess = scanner.nextLine().toUpperCase();
+            if (guess.equalsIgnoreCase("exit")){
+              break;
+            }
+            char firstChar = guess.charAt(0);
+            guessedLetters.add(firstChar);
+            System.out.println(guessedLetters);
+
+            System.out.println("You guessed: " + guess);
+       }
+    }
+    public static void main(String[] args) {
+       WordGuess game = new WordGuess("ZipCode");
+       System.out.println("Welcome to Word Guess!");
+       
+       String playagain = "y";
+
+       while ("y".equals(playagain)){
+              game.play();
+              System.out.print("Play Again(y/n): ");
+              String guess = scanner.nextLine().toLowerCase();
+              game.resetGame();
+       }
+       // exit message
+    }
 }
