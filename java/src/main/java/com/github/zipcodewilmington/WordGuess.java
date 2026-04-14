@@ -38,10 +38,7 @@ public class WordGuess {
     }
 
     public boolean hasUnderscores(String wordToTest) {
-       if (wordToTest.indexOf('_') == -1) {
-              return false;
-       }
-       return true;
+       return wordToTest.indexOf('_') != -1;
     }
 
     public void play() {
@@ -50,32 +47,40 @@ public class WordGuess {
             String currentWord = this.displayWord();
             System.out.println(currentWord);
             if (this.hasUnderscores(currentWord) == false) {
-              System.out.println("You Won!");
+              System.out.println("You're Winner!");
               break;
+            }
+            if (this.wrongGuesses >= this.maxAttempts) {
+                System.out.println("You've lost. The word was " + word);
+                break;
             }
             System.out.print("Guess a letter: ");
-
             String guess = scanner.nextLine().toUpperCase();
-            if (guess.equalsIgnoreCase("exit")){
-              break;
+            if (guess.equalsIgnoreCase("exit")) {
+                break;
             }
+            
             char firstChar = guess.charAt(0);
             guessedLetters.add(firstChar);
             System.out.println(guessedLetters);
 
-            System.out.println("You guessed: " + guess);
-       }
+            if (!word.contains(String.valueOf(firstChar))) {
+                wrongGuesses++;
+            }
+
+            System.out.println("You guessed: " + guessedLetters);
+        }
     }
     public static void main(String[] args) {
        WordGuess game = new WordGuess("ZipCode");
-       System.out.println("Welcome to Word Guess!");
+       System.out.println("Welcome to Word Guess! Start by guessing a letter.");
        
        String playagain = "y";
 
        while ("y".equals(playagain)){
               game.play();
               System.out.print("Play Again(y/n): ");
-              String guess = scanner.nextLine().toLowerCase();
+              playagain = scanner.nextLine().toLowerCase();
               game.resetGame();
        }
        // exit message
