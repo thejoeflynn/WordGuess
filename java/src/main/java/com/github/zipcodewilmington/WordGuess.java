@@ -1,6 +1,8 @@
 package com.github.zipcodewilmington;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -66,22 +68,35 @@ public class WordGuess {
 
             if (!word.contains(String.valueOf(firstChar))) {
                 wrongGuesses++;
+                System.out.println("That's not in the word! You have " + (maxAttempts - wrongGuesses) + " remaining.");
             }
 
             System.out.println("You guessed: " + guessedLetters);
         }
     }
     public static void main(String[] args) {
-       WordGuess game = new WordGuess("ZipCode");
+       ArrayList<String> wordList = new ArrayList<>();
+       wordList.add("ZIPCODE");
+       wordList.add("TASWELL");
+       wordList.add("DYNAMIC");
+       wordList.add("SURFING");
+       wordList.add("SEQUOIA");
+       wordList.add("SUNRISE");
+       wordList.add("BOOLEAN");
+
+       Random random = new Random();
+
        System.out.println("Welcome to Word Guess! Start by guessing a letter.");
        
        String playagain = "y";
 
        while ("y".equals(playagain)){
-              game.play();
-              System.out.print("Play Again(y/n): ");
-              playagain = scanner.nextLine().toLowerCase();
-              game.resetGame();
+            String chosenWord = wordList.get(random.nextInt(wordList.size()));
+            WordGuess game = new WordGuess(chosenWord);
+            game.play();
+            System.out.print("Play Again(y/n): ");
+            playagain = scanner.nextLine().toLowerCase();
+            game.resetGame();
        }
        // exit message
     }
